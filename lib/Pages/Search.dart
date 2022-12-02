@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:insekul_app/Display/PostCardHome.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,10 +16,11 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         backgroundColor: Color(0xFF2963AF),
         automaticallyImplyLeading: false,
+        title: Text('INSEKUL', style: Theme.of(context).textTheme.headline4,),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(30),
+          preferredSize: Size.fromHeight(60),
           child: Padding(
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
@@ -36,8 +38,27 @@ class _SearchPageState extends State<SearchPage> {
           )
         ),
       ),
-      body: Center(
-        child: Text('Search Page'),
+      body: ListView(
+        children: [
+          PostCardHome(
+              profilePhoto: Icon(Ionicons.person, color: Colors.black,),
+              name: 'Divanda Firdaus',
+              postImage: 'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
+              description: 'Belum ada deskripsi'
+          ),
+          PostCardHome(
+              profilePhoto: Icon(Ionicons.person, color: Colors.black,),
+              name: 'Divanda Firdaus',
+              postImage: 'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
+              description: 'Belum ada deskripsi'
+          ),
+          PostCardHome(
+              profilePhoto: Icon(Ionicons.person, color: Colors.black,),
+              name: 'Divanda Firdaus',
+              postImage: 'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
+              description: 'Belum ada deskripsi'
+          ),
+        ],
       ),
     );
   }

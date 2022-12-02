@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:insekul_app/Custom/CustomTextInput.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:insekul_app/SignUpPage.dart';
-import 'package:insekul_app/BottomNav.dart';
+import 'package:insekul_app/Pages/SignUpPage.dart';
+import 'package:insekul_app/Display/BottomNav.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -99,7 +99,7 @@ class LoginPage extends StatelessWidget {
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
                       },
                     )
                   ],

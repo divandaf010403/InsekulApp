@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insekul_app/Custom/CustomFont.dart';
-import 'package:insekul_app/LoginPage.dart';
+import 'package:insekul_app/Pages/LoginPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Insekul App',
       theme: ThemeData(
         textTheme: newTextTheme,
         primarySwatch: Colors.blue,
