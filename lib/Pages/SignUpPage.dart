@@ -129,13 +129,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       width: size.width * 0.5,
                       height: size.width * 0.5,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Color(0xFF2963AF),),
+                        border: Border.all(width: 2, color: Color(0xFF58A191),),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: imageFile == null
-                            ? const Icon(Icons.camera_enhance_rounded, color: Color(0xFF2963AF), size: 40,)
+                            ? const Icon(Icons.camera_enhance_rounded, color: Color(0xFF58A191), size: 40,)
                             : Image.file(imageFile!, fit: BoxFit.fill,),
                       ),
                     ),
@@ -193,6 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
                 child: Text('Sign Up', style: TextStyle(fontSize: 20),),
                 style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
                     shape: MaterialStateProperty.all<
                         RoundedRectangleBorder>(
                         RoundedRectangleBorder(

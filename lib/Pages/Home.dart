@@ -15,8 +15,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2963AF),
+        backgroundColor: Color(0xFF58A191),
         automaticallyImplyLeading: false,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)
+        ),
         title: Text('INSEKUL', style: Theme.of(context).textTheme.headline4,),
         actions: [
           IconButton(

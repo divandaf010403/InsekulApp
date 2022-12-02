@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 50,),
                 Container(
                   alignment: Alignment.center,
-                  child: Text('INSEKUL', style: Theme.of(context).textTheme.headline1,),
+                  child: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 50, fontWeight: FontWeight.w400, color: Colors.black),),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -78,11 +78,12 @@ class LoginPage extends StatelessWidget {
                     },
                     child: Text('Login', style: TextStyle(fontSize: 20),),
                     style: ButtonStyle(
-                        shape: MaterialStateProperty.all<
-                            RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            )
+                      backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          )
                         )
                     ),
                   ),
