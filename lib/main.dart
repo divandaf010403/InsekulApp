@@ -23,14 +23,7 @@ class MyApp extends StatelessWidget {
           return const MaterialApp(
             home: Scaffold(
               body: Center(
-                child: Text('Find Your Job is being initialized',
-                  style: TextStyle(
-                      color: Colors.cyan,
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Signatra'
-                  ),
-                ),
+                child: Text('Initialized'),
               ),
             ),
           );
@@ -52,7 +45,7 @@ class MyApp extends StatelessWidget {
         }
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Find Your Job',
+          title: 'Insekul App',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),

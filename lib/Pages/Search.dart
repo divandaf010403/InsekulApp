@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
           borderRadius: BorderRadius.circular(15)
         ),
         automaticallyImplyLeading: false,
-        title: Text('INSEKUL', style: Theme.of(context).textTheme.headline4,),
+        title: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(60),
           child: Padding(

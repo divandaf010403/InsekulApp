@@ -33,6 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _signUpFormKey = GlobalKey<FormState>();
   bool _obscureText = false;
+  bool _confirmObscureText = false;
   File? imageFile;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
@@ -45,9 +46,11 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _phoneController.dispose();
     _passController.dispose();
+    _confirmPassController.dispose();
     _emailFocusNode.dispose();
     _passFocusNode.dispose();
     _phoneFocusNode.dispose();
+    _confirmPassFocusNode.dispose();
     super.dispose();
   }
 
@@ -140,10 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final isValid = _signUpFormKey.currentState!.validate();
     if (isValid) {
       if (imageFile == null) {
-        GlobalMethod.showErrorDialog(
-          error: 'Please Pick An Image',
-          ctx: context,
-        );
+        GlobalMethod.showErrorDialog(error: 'Please Pick An Image', ctx: context,);
         return;
       }
 
@@ -152,24 +152,30 @@ class _SignUpPageState extends State<SignUpPage> {
       });
 
       try {
-        await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text.trim().toLowerCase(),
-          password: _passController.text.trim(),
-        );
-        final User? user = _auth.currentUser;
-        final _uid = user!.uid;
-        final ref = FirebaseStorage.instance.ref().child('userImage').child(_uid + '.jpg');
-        await ref.putFile(imageFile!);
-        imageUrl = await ref.getDownloadURL();
-        FirebaseFirestore.instance.collection('users').doc(_uid).set({
-          'id': _uid,
-          'name': _fullNameController.text,
-          'email': _emailController.text,
-          'userImage': imageUrl,
-          'phoneNumber': _phoneController.text,
-          'createdAt': Timestamp.now(),
-        });
-        Navigator.canPop(context) ? Navigator.pop(context) : null;
+        if(_passController.text != _confirmPassController.text) {
+          GlobalMethod.showErrorDialog(error: 'Password Not Match', ctx: context,);
+          return;
+        }
+        else {
+          await _auth.createUserWithEmailAndPassword(
+            email: _emailController.text.trim().toLowerCase(),
+            password: _passController.text.trim(),
+          );
+          final User? user = _auth.currentUser;
+          final _uid = user!.uid;
+          final ref = FirebaseStorage.instance.ref().child('userImage').child(_uid + '.jpg');
+          await ref.putFile(imageFile!);
+          imageUrl = await ref.getDownloadURL();
+          FirebaseFirestore.instance.collection('users').doc(_uid).set({
+            'id': _uid,
+            'name': _fullNameController.text,
+            'email': _emailController.text,
+            'userImage': imageUrl,
+            'phoneNumber': _phoneController.text,
+            'createdAt': Timestamp.now(),
+          });
+          Navigator.canPop(context) ? Navigator.pop(context) : null;
+        }
       } catch (error) {
         setState(() {
           _isLoading = false;
@@ -236,7 +242,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _fullNameController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This Field is Missing';
+                            return 'Enter Your Full Name';
                           } else {
                             return null;
                           }
@@ -252,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _emailController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This Field is Missing';
+                            return 'Enter Your Valid Email Address';
                           } else {
                             return null;
                           }
@@ -268,13 +274,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         controller: _phoneController,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'This Field is Missing';
+                            return 'Enter Your Phone Number';
                           } else {
                             return null;
                           }
                         },
                         hint: 'Phone Number',
-                        icon: Icon(Ionicons.phone_landscape_outline),
+                        icon: Icon(Ionicons.call_outline),
                       ),
                       const SizedBox(height: 15,),
                       CustomTextInput(
@@ -282,9 +288,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         inputType: TextInputType.visiblePassword,
                         focusNode: _confirmPassFocusNode,
                         controller: _passController,
+                        obscureText: !_obscureText,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'This Field is Missing';
+                          if (value!.isEmpty || value.length < 7) {
+                            return 'Enter Your Valid Password';
                           } else {
                             return null;
                           }
@@ -299,18 +306,20 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                           child: Icon(
                             _obscureText
-                                ? Icons.visibility : Icons.visibility_off,
+                                ? Ionicons.eye_outline : Ionicons.eye_off_outline,
                             color: Colors.black,
                           ),
                         ),
                       ),
+                      SizedBox(height: 15,),
                       CustomTextInput(
                         action: TextInputAction.next,
                         inputType: TextInputType.visiblePassword,
-                        controller: _passController,
+                        controller: _confirmPassController,
+                        obscureText: !_confirmObscureText,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'This Field is Missing';
+                          if (value!.isEmpty || value.length < 7) {
+                            return 'Enter Your Valid Password';
                           } else {
                             return null;
                           }
@@ -320,56 +329,73 @@ class _SignUpPageState extends State<SignUpPage> {
                         suffixIcon: GestureDetector(
                           onTap: () {
                             setState(() {
-                              _obscureText = !_obscureText;
+                              _confirmObscureText = !_confirmObscureText;
                             });
                           },
                           child: Icon(
-                            _obscureText
-                                ? Icons.visibility : Icons.visibility_off,
+                            _confirmObscureText
+                                ? Ionicons.eye_outline : Ionicons.eye_off_outline,
                             color: Colors.black,
                           ),
                         ),
                       ),
+                      const SizedBox(height: 20,),
+                      _isLoading
+                          ?
+                      Center(
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          child: const CircularProgressIndicator(),
+                        ),
+                      )
+                      :
+                      MaterialButton(
+                        onPressed: (){
+                          _submitFormOnSignUp();
+                        },
+                        color: Colors.cyan,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Already have an account?',
+                            style: TextStyle(fontSize: 20),),
+                          TextButton(
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 )
-            ),
-            SizedBox(height: 20,),
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  _submitFormOnSignUp();
-                },
-                child: Text('Sign Up', style: TextStyle(fontSize: 20),),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
-                    shape: MaterialStateProperty.all<
-                        RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        )
-                    )
-                ),
-              ),
-            ),
-            SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Already have an account?',
-                  style: TextStyle(fontSize: 20),),
-                TextButton(
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                )
-              ],
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:insekul_app/Display/PostCardHome.dart';
 import 'package:insekul_app/SidePages/AddPostPage.dart';
 
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15)
         ),
-        title: Text('INSEKUL', style: Theme.of(context).textTheme.headline4,),
+        title: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),),
         actions: [
           IconButton(
             onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage()));},

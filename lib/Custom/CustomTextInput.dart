@@ -9,7 +9,8 @@ class CustomTextInput extends StatelessWidget {
     this.inputType,
     this.suffixIcon,
     this.action,
-    this.focusNode
+    this.focusNode,
+    this.obscureText = false,
   }) : super(key: key);
 
   TextEditingController? controller;
@@ -20,6 +21,7 @@ class CustomTextInput extends StatelessWidget {
   String hint;
   Icon icon;
   FocusNode? focusNode;
+  bool obscureText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class CustomTextInput extends StatelessWidget {
       keyboardType: inputType,
       controller: controller,
       validator: validator,
-
+      obscureText: obscureText,
       style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         prefixIcon: icon,

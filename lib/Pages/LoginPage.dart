@@ -178,55 +178,72 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             )
                           ),
                         ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              //forgot password screen
+                            },
+                            child: const Text(
+                              'Forgot Password', style: TextStyle(fontSize: 17),),
+                          ),
+                        ),
+                        const SizedBox(height: 20,),
+                        _isLoading
+                            ?
+                        Center(
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            child: const CircularProgressIndicator(),
+                          ),
+                        )
+                        :
+                        MaterialButton(
+                          onPressed: _submitFormOnLogin,
+                          color: Colors.cyan,
+                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text('Does not have account?',
+                              style: TextStyle(fontSize: 20),),
+                            TextButton(
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                              },
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   )
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      //forgot password screen
-                    },
-                    child: const Text(
-                      'Forgot Password', style: TextStyle(fontSize: 17),),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _submitFormOnLogin,
-                    child: Text('Login', style: TextStyle(fontSize: 20),),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
-                        shape: MaterialStateProperty.all<
-                            RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            )
-                        )
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Does not have account?',
-                      style: TextStyle(fontSize: 20),),
-                    TextButton(
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
-                      },
-                    )
-                  ],
                 ),
               ]
           )
