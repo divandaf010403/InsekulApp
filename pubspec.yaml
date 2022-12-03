@@ -40,6 +40,10 @@ dependencies:
   ionicons: ^0.2.1
   image_picker: ^0.8.5+3
   image_cropper: ^3.0.0
+  firebase_auth: ^4.1.5
+  firebase_core: ^2.3.0
+  cloud_firestore: ^4.1.0
+  firebase_storage: ^11.0.6
 
 dev_dependencies:
   flutter_test:

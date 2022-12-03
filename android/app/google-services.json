@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "617437632304",
+    "project_id": "insekulapp",
+    "storage_bucket": "insekulapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617437632304:android:18f4548aeddc3f37959af5",
+        "android_client_info": {
+          "package_name": "com.kelompok.insekul_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617437632304-ran25m6fsf4v0v6follpug12hnq0k5rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuywPY1gcRFwo22TKKMSvL2mPGhSojtjo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617437632304-ran25m6fsf4v0v6follpug12hnq0k5rq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

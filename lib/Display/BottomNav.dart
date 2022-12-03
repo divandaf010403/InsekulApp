@@ -35,11 +35,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
         backgroundColor: Colors.white,
         onTap: onTap,
         currentIndex: currentIndex,
-        selectedItemColor: Colors.black54,
+        selectedItemColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey.withOpacity(0.5),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        elevation: 0,
+        elevation: 10,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Ionicons.home_outline),

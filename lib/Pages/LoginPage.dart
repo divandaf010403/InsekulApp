@@ -3,10 +3,59 @@ import 'package:insekul_app/Custom/CustomTextInput.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Pages/SignUpPage.dart';
-import 'package:insekul_app/Display/BottomNav.dart';
+import 'package:insekul_app/Custom/global_methods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+
+  final TextEditingController _emailController = TextEditingController(text: '');
+  final TextEditingController _passController = TextEditingController(text: '');
+
+  final FocusNode _passFocusNode = FocusNode();
+  bool _isLoading = false;
+  bool _obscureText = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _loginFormKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passController.dispose();
+  }
+
+  void _submitFormOnLogin() async {
+    final isValid = _loginFormKey.currentState!.validate();
+    if (isValid) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await _auth.signInWithEmailAndPassword(
+          email: _emailController.text.trim().toLowerCase(),
+          password: _passController.text.trim(),
+        );
+        Navigator.canPop(context) ? Navigator.pop(context) : null;
+      } catch (error) {
+        setState(() {
+          _isLoading = false;
+        });
+        GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+        print('Error Occured $error');
+      }
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +77,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text('Info Seputar Kuliah', style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,),
+                  child: Text('Info Seputar Kuliah', style: GoogleFonts.tangerine(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.black),),
                 ),
                 SizedBox(height: 50,),
                 Container(
@@ -42,20 +88,99 @@ class LoginPage extends StatelessWidget {
                           color: Colors.black)),
                 ),
                 SizedBox(height: 15,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: CustomTextInput(
-                    hint: 'Email or Phone Number',
-                    icon: Icon(Ionicons.mail_outline,),
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: CustomTextInput(
-                    hint: 'Password',
-                    icon: Icon(Ionicons.lock_closed_outline,),
-                  ),
+                Form(
+                  key: _loginFormKey,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => FocusScope.of(context).requestFocus(_passFocusNode),
+                          keyboardType: TextInputType.emailAddress,
+                          controller:_emailController,
+                          validator: (value) {
+                            if (value!.isEmpty | !value.contains('@')) {
+                              return 'Please Enter Your Valid Email Address';
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            prefixIcon: Icon(Ionicons.mail_outline),
+                            hintText: 'Email',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(50),
+                            )
+                          ),
+                        ),
+                        const SizedBox(height: 15,),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          focusNode: _passFocusNode,
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: _passController,
+                          obscureText: !_obscureText,
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 7) {
+                              return 'Please Enter a Valid Password';
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            prefixIcon: Icon(Ionicons.lock_closed_outline),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              child: Icon(
+                                _obscureText
+                                    ? Icons.visibility : Icons.visibility_off,
+                                color: Colors.black,
+                              ),
+                            ),
+                            hintText: 'Password',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                              borderRadius: BorderRadius.circular(50),
+                            )
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -73,17 +198,15 @@ class LoginPage extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
-                    },
+                    onPressed: _submitFormOnLogin,
                     child: Text('Login', style: TextStyle(fontSize: 20),),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
-                      shape: MaterialStateProperty.all<
-                          RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          )
+                        backgroundColor: MaterialStateProperty.all(Color(0xFF58A191)),
+                        shape: MaterialStateProperty.all<
+                            RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            )
                         )
                     ),
                   ),
@@ -111,4 +234,5 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
 
