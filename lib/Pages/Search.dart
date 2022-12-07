@@ -31,7 +31,7 @@ class _SearchPageState extends State<SearchPage> {
         automaticallyImplyLeading: false,
         title: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: Size.fromHeight(70),
           child: Padding(
             padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
             child: TextField(

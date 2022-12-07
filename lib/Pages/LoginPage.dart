@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:insekul_app/Custom/CustomTextInput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Pages/SignUpPage.dart';
@@ -43,6 +44,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           email: _emailController.text.trim().toLowerCase(),
           password: _passController.text.trim(),
         );
+
         Navigator.canPop(context) ? Navigator.pop(context) : null;
       } catch (error) {
         setState(() {
@@ -73,11 +75,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 SizedBox(height: 50,),
                 Container(
                   alignment: Alignment.center,
-                  child: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 50, fontWeight: FontWeight.w400, color: Colors.black),),
+                  child: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 50, fontWeight: FontWeight.w400, color: Color(0xFF58A191)),),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text('Info Seputar Kuliah', style: GoogleFonts.tangerine(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.black),),
+                  child: Text('Info Seputar Kuliah', style: GoogleFonts.courgette(fontSize: 25, fontWeight: FontWeight.w400, color: Colors.black),),
                 ),
                 SizedBox(height: 50,),
                 Container(
@@ -202,7 +204,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         :
                         MaterialButton(
                           onPressed: _submitFormOnLogin,
-                          color: Colors.cyan,
+                          color: Color(0xFF58A191),
                           elevation: 8,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13),

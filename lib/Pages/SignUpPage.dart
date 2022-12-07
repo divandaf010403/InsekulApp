@@ -4,12 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:insekul_app/Custom/global_methods.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Custom/CustomTextInput.dart';
-import 'package:insekul_app/Display/BottomNav.dart';
+import 'package:insekul_app/Pages/LoginPage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);

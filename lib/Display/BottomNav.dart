@@ -6,19 +6,18 @@ import 'package:insekul_app/Pages/Notification.dart';
 import 'package:insekul_app/Pages/MyAccount.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  List pages = [
-    HomePage(),
-    SearchPage(),
-    NotificationPage(),
-    MyAccount(),
-  ];
+  // List pages = [
+  //   HomePage(),
+  //   SearchPage(),
+  //   NotificationPage(),
+  //   MyAccount(),
+  // ];
 
   int currentIndex = 0;
   void onTap(int index) {
@@ -30,7 +29,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: [
+          HomePage(),
+          SearchPage(),
+          NotificationPage(),
+          MyAccount(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         onTap: onTap,
@@ -43,20 +50,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
         elevation: 10,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.home_outline),
-            label: ''
+              icon: Icon(Ionicons.home_outline),
+              label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.search_outline),
-            label: ''
+              icon: Icon(Ionicons.search_outline),
+              label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.notifications_outline),
-            label: ''
+              icon: Icon(Ionicons.notifications_outline),
+              label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.person_outline),
-            label: ''
+              icon: Icon(Ionicons.person_outline),
+              label: ''
           ),
         ],
       ),
