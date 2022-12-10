@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -149,35 +150,30 @@ class _MyAccountState extends State<MyAccount> {
               ),
             ),
           ),
-          Container(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: MaterialButton(
-              onPressed: (){
-                _logout(context);
-              },
-              color: Colors.cyan,
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Logout',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    )
-                  ],
+            child: SettingsGroup(
+              settingsGroupTitle: "Account",
+              items: [
+                SettingsItem(
+                  onTap: () {
+                    _logout(context);
+                  },
+                  icons: Icons.exit_to_app_rounded,
+                  title: "Sign Out",
                 ),
-              ),
+                SettingsItem(
+                  onTap: () {},
+                  icons: Icons.delete,
+                  title: "Delete account",
+                  titleStyle: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
       )
     );

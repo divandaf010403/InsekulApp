@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Pages/SignUpPage.dart';
@@ -66,6 +65,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           padding: const EdgeInsets.only(top: 20),
           child: ListView(
               children: [
+                SizedBox(height: 20,),
                 Container(
                   alignment: Alignment.center,
                   child: Text('Login', style: GoogleFonts.poppins(fontSize: 32,

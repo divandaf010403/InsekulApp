@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Color(0xFF58A191),
           automaticallyImplyLeading: false,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15)
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), bottomLeft: Radius.circular(15))
           ),
           bottom: PreferredSize(
             preferredSize: Size(0, 50),

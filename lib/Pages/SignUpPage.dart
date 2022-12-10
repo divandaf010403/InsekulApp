@@ -10,7 +10,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -197,6 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
         padding: const EdgeInsets.only(top: 20),
         child: ListView(
           children: <Widget>[
+            SizedBox(height: 20,),
             Container(
               alignment: Alignment.center,
               child: Text('Sign Up', style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),),

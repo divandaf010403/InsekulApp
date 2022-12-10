@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomTextInput extends StatelessWidget {
   CustomTextInput({Key? key,
-    required this.hint,
-    required this.icon,
+    this.hint,
+    this.icon,
     this.controller,
     this.validator,
     this.inputType,
@@ -11,6 +11,8 @@ class CustomTextInput extends StatelessWidget {
     this.action,
     this.focusNode,
     this.obscureText = false,
+    this.maxLines,
+    this.maxLength,
   }) : super(key: key);
 
   TextEditingController? controller;
@@ -18,10 +20,12 @@ class CustomTextInput extends StatelessWidget {
   Widget? suffixIcon;
   TextInputType? inputType;
   TextInputAction? action;
-  String hint;
-  Icon icon;
+  String? hint;
+  Icon? icon;
   FocusNode? focusNode;
   bool obscureText = false;
+  int? maxLines;
+  int? maxLength;
 
   @override
   Widget build(BuildContext context) {
