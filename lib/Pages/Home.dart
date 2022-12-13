@@ -69,16 +69,42 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            PostCardHome(
-                profilePhoto: Icon(Ionicons.person, color: Colors.black,),
-                name: 'Divanda Firdaus',
-                postImage: 'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
-                description: 'Belum ada deskripsi'
-            ),
-          ],
-        )
+        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>> (
+          stream: FirebaseFirestore.instance.collection('post').snapshots(),
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator(),);
+            } else if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.data?.docs.isNotEmpty == true) {
+                return ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return PostCardHome(
+                      name: snapshot.data?.docs[index]['name'],
+                      postImage: snapshot.data?.docs[index]['postImage'],
+                      description: snapshot.data?.docs[index]['keterangan'],
+                      profilePhoto: snapshot.data?.docs[index]['userImage'],
+                    );
+                  },
+                );
+              }
+              else {
+                return const Center(
+                  child: Text('Info Masih Kosong'),
+                );
+              }
+            }
+            return const Center(
+              child: Text(
+                'Coba Cek Internet Anda',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            );
+          },
+        ),
     );
   }
 }
