@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Custom/SearchCategory.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:insekul_app/Custom/user.dart';
+import 'package:uuid/uuid.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -11,6 +14,27 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+
+  final postId = const Uuid().v4();
+
+  Future _getData() async {
+    await FirebaseFirestore.instance.collection('users').doc(postId)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          category = snapshot.data()!['eventCategory'];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getData();
+  }
 
   final List<dynamic> btn = ['Pelatihan', 'Lomba', 'Seminar', 'Magang'];
   final List<dynamic> img = [
@@ -51,55 +75,6 @@ class _SearchPageState extends State<SearchPage> {
           )
         ),
       ),
-      // body: SingleChildScrollView(
-      //   child: Column(
-      //     mainAxisSize: MainAxisSize.min,
-      //     children: <Widget>[
-      //       GridView.builder(
-      //         physics: NeverScrollableScrollPhysics(),
-      //         shrinkWrap: true,
-      //         padding: EdgeInsets.all(30),
-      //         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-      //             maxCrossAxisExtent: 200,
-      //             childAspectRatio: 3.2,
-      //             crossAxisSpacing: 20,
-      //             mainAxisSpacing: 20),
-      //         itemCount: btn.length,
-      //         itemBuilder: (BuildContext ctx, index) {
-      //           return Container(
-      //             alignment: Alignment.center,
-      //             decoration: BoxDecoration(
-      //                 color: Color(0xFFA0D2C7),
-      //                 borderRadius: BorderRadius.circular(20)),
-      //             child: Text(btn[index], style: GoogleFonts.poppins(fontSize: 17, fontWeight: FontWeight.w600)),
-      //           );
-      //         }
-      //       ),
-      //       SizedBox(height: 10,),
-      //       Container(
-      //         padding: EdgeInsets.symmetric(horizontal: 30),
-      //         child: Column(
-      //           children: [
-      //             ListTile(
-      //               title: Text('Pelatihan', style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600)),
-      //             ),
-      //             Divider(thickness: 3, height: 0,),
-      //           ],
-      //         )
-      //       ),
-      //       Expanded(
-      //         child: ListView.builder(
-      //           shrinkWrap: true,
-      //           scrollDirection: Axis.horizontal,
-      //           itemCount: 15,
-      //           itemBuilder: (BuildContext context, int index) => Card(
-      //             child: Center(child: Text('Dummy Card Text')),
-      //           ),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // )
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -141,17 +116,33 @@ class _SearchPageState extends State<SearchPage> {
                     Divider(thickness: 3, height: 0,),
                     SizedBox(
                       height: 150.0,
-                      child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 15,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset('images/image1.jpg'),
-                          ),
-                        ),
+                      child: FutureBuilder(
+                        future: _getData(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+                            // var data = snapshot.data.data();
+                            // var category = data['eventCategory']!;
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                if(category! == 'Pelatihan') {
+                                  return Card(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.network(snapshot.data?.docs[index]['postImage']),
+                                    ),
+                                  );
+                                }
+                                else {
+                                  return Text('Data Kosong');
+                                }
+                              },
+                            );
+                          } else {
+                            return Text("Error");
+                          }
+                        },
                       ),
                     ),
                   ],

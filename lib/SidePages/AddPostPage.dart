@@ -74,12 +74,12 @@ class _AddPostPageState extends State<AddPostPage> {
           backgroundColor: Colors.grey,
           fontSize: 18.0,
         );
+        Navigator.pop(context);
         _keterangan.clear();
+        _lokasi.clear();
         setState(() {
           _eventCategory.text = 'Pilih Kategori Event';
           _jenjang.text = 'Pilih Jenjang Pendidikan';
-          _lokasi.text = 'Lokasi Acara';
-          postImage = null;
         });
       } catch (error) {
         {

@@ -124,8 +124,8 @@ class _MyAccountState extends State<MyAccount> {
                 children: [
                   SizedBox(height: 15,),
                   Container(
-                    height: 150,
-                    width: 150,
+                    height: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     decoration: BoxDecoration(
                       border: Border.all(width: 2, color: Colors.white),
                       borderRadius: BorderRadius.circular(100),
@@ -142,9 +142,9 @@ class _MyAccountState extends State<MyAccount> {
                     ),
                   ),
                   SizedBox(height: 15,),
-                  Text(name!, style: GoogleFonts.fugazOne(fontSize: 30, color: Colors.white),),
+                  Text(name!, style: GoogleFonts.notoSans(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),),
                   // SizedBox(height: 5,),
-                  Text(email!, style: GoogleFonts.itim(fontSize: 23, color: Colors.white),),
+                  Text(email!, style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),),
                   SizedBox(height: 15,),
                 ],
               ),

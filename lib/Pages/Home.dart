@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,10 +58,18 @@ class _HomePageState extends State<HomePage> {
           ),
           title: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),),
           actions: [
-            IconButton(
-              onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage()));},
-              icon: Icon(Icons.add_box_outlined,),
-              enableFeedback: false,
+            //
+            OpenContainer(
+              transitionDuration: Duration(seconds: 1),
+              openBuilder: (context, _) => AddPostPage(),
+              openColor: Colors.white,
+              middleColor: Colors.white,
+              openElevation: 0,
+              closedColor: Colors.transparent,
+              closedElevation: 0,
+              closedBuilder: (context, openContainer) {
+                return Icon(Icons.add_box_outlined,);
+              },
             ),
             IconButton(
               onPressed: (){},
@@ -70,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>> (
-          stream: FirebaseFirestore.instance.collection('post').snapshots(),
+          stream: FirebaseFirestore.instance.collection('post').orderBy('createdAt', descending: true).snapshots(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator(),);

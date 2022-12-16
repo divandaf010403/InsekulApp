@@ -38,6 +38,8 @@ class CustomTextInput extends StatelessWidget {
       obscureText: obscureText,
       style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         prefixIcon: icon,
         hintText: hint,
         suffixIcon: suffixIcon,

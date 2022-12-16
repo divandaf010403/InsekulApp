@@ -10,6 +10,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wave/wave.dart';
+import 'package:wave/config.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -191,216 +193,244 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: ListView(
-          children: <Widget>[
-            SizedBox(height: 20,),
-            Container(
-              alignment: Alignment.center,
-              child: Text('Sign Up', style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),),
+    return Stack(
+      children: [
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: RotationTransition(
+            turns: AlwaysStoppedAnimation(180 / 360),
+            child: WaveWidget(
+              config: CustomConfig(
+                colors: [
+                  Color(0xFF58A191),
+                  Color(0xFF49c2a8),
+                  Color(0xFF6fe7cd),
+                  Color(0xFF6fe7cd)
+                ],
+                durations: [3500, 19000, 10800, 6000],
+                heightPercentages: [0.64, 0.66, 0.68, 0.70],
+              ),
+              size: Size(double.infinity, double.infinity),
+              waveAmplitude: 2,
             ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    _showImageDialog();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
-                    child: Container(
-                      width: size.width * 0.5,
-                      height: size.width * 0.5,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Color(0xFF58A191),),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: imageFile == null
-                            ? const Icon(Icons.camera_enhance_rounded, color: Color(0xFF58A191), size: 40,)
-                            : Image.file(imageFile!, fit: BoxFit.fill,),
-                      ),
-                    ),
+          ),
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 40),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20,),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text('CREATE NEW ACCOUNT', style: GoogleFonts.roboto(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black),),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20,),
-            Form(
-                key: _signUpFormKey,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomTextInput(
-                        action: TextInputAction.next,
-                        inputType: TextInputType.name,
-                        focusNode: _emailFocusNode,
-                        controller: _fullNameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter Your Full Name';
-                          } else {
-                            return null;
-                          }
+                      GestureDetector(
+                        onTap: (){
+                          _showImageDialog();
                         },
-                        hint: 'Full Name',
-                        icon: Icon(Ionicons.person_outline),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextInput(
-                        action: TextInputAction.next,
-                        inputType: TextInputType.emailAddress,
-                        focusNode: _phoneFocusNode,
-                        controller: _emailController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter Your Valid Email Address';
-                          } else {
-                            return null;
-                          }
-                        },
-                        hint: 'Email',
-                        icon: Icon(Ionicons.mail_outline),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextInput(
-                        action: TextInputAction.next,
-                        inputType: TextInputType.phone,
-                        focusNode: _passFocusNode,
-                        controller: _phoneController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Enter Your Phone Number';
-                          } else {
-                            return null;
-                          }
-                        },
-                        hint: 'Phone Number',
-                        icon: Icon(Ionicons.call_outline),
-                      ),
-                      const SizedBox(height: 15,),
-                      CustomTextInput(
-                        action: TextInputAction.next,
-                        inputType: TextInputType.visiblePassword,
-                        focusNode: _confirmPassFocusNode,
-                        controller: _passController,
-                        obscureText: !_obscureText,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 7) {
-                            return 'Enter Your Valid Password';
-                          } else {
-                            return null;
-                          }
-                        },
-                        hint: 'Password',
-                        icon: Icon(Ionicons.lock_closed_outline),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _obscureText = !_obscureText;
-                            });
-                          },
-                          child: Icon(
-                            _obscureText
-                                ? Ionicons.eye_outline : Ionicons.eye_off_outline,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextInput(
-                        action: TextInputAction.next,
-                        inputType: TextInputType.visiblePassword,
-                        controller: _confirmPassController,
-                        obscureText: !_confirmObscureText,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 7) {
-                            return 'Enter Your Valid Password';
-                          } else {
-                            return null;
-                          }
-                        },
-                        hint: 'Confirm Password',
-                        icon: Icon(Ionicons.lock_closed_outline),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _confirmObscureText = !_confirmObscureText;
-                            });
-                          },
-                          child: Icon(
-                            _confirmObscureText
-                                ? Ionicons.eye_outline : Ionicons.eye_off_outline,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20,),
-                      _isLoading
-                          ?
-                      Center(
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          child: const CircularProgressIndicator(),
-                        ),
-                      )
-                      :
-                      MaterialButton(
-                        onPressed: (){
-                          _submitFormOnSignUp();
-                        },
-                        color: Colors.cyan,
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13),
-                        ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Sign Up',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              )
-                            ],
+                          padding: const EdgeInsets.symmetric(horizontal: 60),
+                          child: Container(
+                            width: size.width * 0.5,
+                            height: size.width * 0.5,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 2, color: Color(0xFF58A191),),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: imageFile == null
+                                  ? const Icon(Icons.camera_enhance_rounded, color: Color(0xFF58A191), size: 40,)
+                                  : Image.file(imageFile!, fit: BoxFit.fill,),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Already have an account?',
-                            style: TextStyle(fontSize: 20),),
-                          TextButton(
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
                       ),
                     ],
                   ),
-                )
+                  SizedBox(height: 20,),
+                  Form(
+                      key: _signUpFormKey,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            CustomTextInput(
+                              action: TextInputAction.next,
+                              inputType: TextInputType.name,
+                              focusNode: _emailFocusNode,
+                              controller: _fullNameController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Enter Your Full Name';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              hint: 'Full Name',
+                              icon: Icon(Ionicons.person_outline),
+                            ),
+                            SizedBox(height: 15,),
+                            CustomTextInput(
+                              action: TextInputAction.next,
+                              inputType: TextInputType.emailAddress,
+                              focusNode: _phoneFocusNode,
+                              controller: _emailController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Enter Your Valid Email Address';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              hint: 'Email',
+                              icon: Icon(Ionicons.mail_outline),
+                            ),
+                            SizedBox(height: 15,),
+                            CustomTextInput(
+                              action: TextInputAction.next,
+                              inputType: TextInputType.phone,
+                              focusNode: _passFocusNode,
+                              controller: _phoneController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Enter Your Phone Number';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              hint: 'Phone Number',
+                              icon: Icon(Ionicons.call_outline),
+                            ),
+                            const SizedBox(height: 15,),
+                            CustomTextInput(
+                              action: TextInputAction.next,
+                              inputType: TextInputType.visiblePassword,
+                              focusNode: _confirmPassFocusNode,
+                              controller: _passController,
+                              obscureText: !_obscureText,
+                              validator: (value) {
+                                if (value!.isEmpty || value.length < 7) {
+                                  return 'Enter Your Valid Password';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              hint: 'Password',
+                              icon: Icon(Ionicons.lock_closed_outline),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                                child: Icon(
+                                  _obscureText
+                                      ? Ionicons.eye_outline : Ionicons.eye_off_outline,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 15,),
+                            CustomTextInput(
+                              action: TextInputAction.next,
+                              inputType: TextInputType.visiblePassword,
+                              controller: _confirmPassController,
+                              obscureText: !_confirmObscureText,
+                              validator: (value) {
+                                if (value!.isEmpty || value.length < 7) {
+                                  return 'Enter Your Valid Password';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              hint: 'Confirm Password',
+                              icon: Icon(Ionicons.lock_closed_outline),
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _confirmObscureText = !_confirmObscureText;
+                                  });
+                                },
+                                child: Icon(
+                                  _confirmObscureText
+                                      ? Ionicons.eye_outline : Ionicons.eye_off_outline,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20,),
+                            _isLoading
+                                ?
+                            Center(
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                child: const CircularProgressIndicator(),
+                              ),
+                            )
+                                :
+                            MaterialButton(
+                              onPressed: (){
+                                _submitFormOnSignUp();
+                              },
+                              color: Colors.cyan,
+                              elevation: 8,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 14),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Sign Up',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text('Already have an account?',
+                                  style: TextStyle(fontSize: 20),),
+                                TextButton(
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          ),
+        )
+      ],
     );
   }
 }
