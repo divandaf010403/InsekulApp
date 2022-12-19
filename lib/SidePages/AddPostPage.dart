@@ -52,7 +52,7 @@ class _AddPostPageState extends State<AddPostPage> {
         _isLoading = true;
       });
       try {
-        final ref = FirebaseStorage.instance.ref().child('postImage').child(_uid + '.jpg');
+        final ref = FirebaseStorage.instance.ref().child('postImage').child(postId + '.jpg');
         await ref.putFile(imageFile!);
         postImage = await ref.getDownloadURL();
         await FirebaseFirestore.instance.collection('post').doc(postId).set({
@@ -63,24 +63,19 @@ class _AddPostPageState extends State<AddPostPage> {
           'eventCategory': _eventCategory.text,
           'jenjang': _jenjang.text,
           'lokasi': _lokasi.text,
+          'eventDate': _eventDate.text,
           'keterangan': _keterangan.text,
           'name': name,
           'userImage': userImage,
           'createdAt': Timestamp.now(),
         });
         await Fluttertoast.showToast(
-          msg: 'The Task Has Been Uploaded',
+          msg: 'Upload Berhasil',
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.grey,
           fontSize: 18.0,
         );
         Navigator.pop(context);
-        _keterangan.clear();
-        _lokasi.clear();
-        setState(() {
-          _eventCategory.text = 'Pilih Kategori Event';
-          _jenjang.text = 'Pilih Jenjang Pendidikan';
-        });
       } catch (error) {
         {
           setState(() {

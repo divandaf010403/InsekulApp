@@ -6,6 +6,8 @@ import 'package:insekul_app/Display/PostCardHome.dart';
 import 'package:insekul_app/SidePages/AddPostPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:insekul_app/Display/DetailInfo.dart';
+import 'package:insekul_app/Pages/DetailEventPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   String? name = '';
 
-  Future _getData() async {
+  void _getData() async {
     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((snapshot) {
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.data?.docs.isNotEmpty == true) {
                 return ListView.builder(
                   itemCount: snapshot.data?.docs.length,
-                  itemBuilder: (BuildContext context, int index){
+                  itemBuilder: (context, index){
                     return PostCardHome(
                       name: snapshot.data?.docs[index]['name'],
                       postImage: snapshot.data?.docs[index]['postImage'],

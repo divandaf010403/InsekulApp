@@ -15,27 +15,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
-  final postId = const Uuid().v4();
-
-  Future _getData() async {
-    await FirebaseFirestore.instance.collection('users').doc(postId)
-        .get()
-        .then((snapshot) {
-      if (snapshot.exists) {
-        setState(() {
-          category = snapshot.data()!['eventCategory'];
-        });
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _getData();
-  }
-
   final List<dynamic> btn = ['Pelatihan', 'Lomba', 'Seminar', 'Magang'];
   final List<dynamic> img = [
     'images/pelatihan.png',
@@ -79,6 +58,13 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 30, top: 15),
+                child: Text('Paling Populer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+              )
+            ),
             GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -116,31 +102,34 @@ class _SearchPageState extends State<SearchPage> {
                     Divider(thickness: 3, height: 0,),
                     SizedBox(
                       height: 150.0,
-                      child: FutureBuilder(
-                        future: _getData(),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance.collection('post').where('eventCategory', isEqualTo: 'Pelatihan').snapshots(),
                         builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-                            // var data = snapshot.data.data();
-                            // var category = data['eventCategory']!;
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                if(category! == 'Pelatihan') {
+                          if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.data?.docs.isNotEmpty == true) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
                                   return Card(
+                                    shape:  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Image.network(snapshot.data?.docs[index]['postImage']),
                                     ),
                                   );
-                                }
-                                else {
-                                  return Text('Data Kosong');
-                                }
-                              },
-                            );
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: Text('Tidak Ada Data'),
+                              );
+                            }
                           } else {
-                            return Text("Error");
+                            return Center(child: CircularProgressIndicator(),);
                           }
                         },
                       ),
@@ -163,17 +152,33 @@ class _SearchPageState extends State<SearchPage> {
                     Divider(thickness: 3, height: 0,),
                     SizedBox(
                       height: 150.0,
-                      child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 15,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset('images/image1.jpg'),
-                          ),
-                        ),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance.collection('post').where('eventCategory', isEqualTo: 'Lomba').snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.data?.docs.isNotEmpty == true) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.network(snapshot.data?.docs[index]['postImage']),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: Text('Tidak Ada Data'),
+                              );
+                            }
+                          } else {
+                            return Center(child: CircularProgressIndicator(),);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -194,17 +199,33 @@ class _SearchPageState extends State<SearchPage> {
                     Divider(thickness: 3, height: 0,),
                     SizedBox(
                       height: 150.0,
-                      child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 15,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset('images/image1.jpg'),
-                          ),
-                        ),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance.collection('post').where('eventCategory', isEqualTo: 'Seminar').snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.data?.docs.isNotEmpty == true) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.network(snapshot.data?.docs[index]['postImage']),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: Text('Tidak Ada Data'),
+                              );
+                            }
+                          } else {
+                            return Center(child: CircularProgressIndicator(),);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -225,17 +246,35 @@ class _SearchPageState extends State<SearchPage> {
                     Divider(thickness: 3, height: 0,),
                     SizedBox(
                       height: 150.0,
-                      child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 15,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset('images/image1.jpg'),
-                          ),
-                        ),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: FirebaseFirestore.instance.collection('post').where('eventCategory', isEqualTo: 'Magang').snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.data?.docs.isNotEmpty == true) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    shape:  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: ClipRRect(
+                                      child: Image.network(snapshot.data?.docs[index]['postImage']),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: Text('Tidak Ada Data'),
+                              );
+                            }
+                          } else {
+                            return Center(child: CircularProgressIndicator(),);
+                          }
+                        },
                       ),
                     ),
                   ],

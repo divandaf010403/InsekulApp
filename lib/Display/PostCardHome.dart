@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:insekul_app/Pages/DetailEventPage.dart';
+import 'package:insekul_app/Display/DetailInfo.dart';
 
 class PostCardHome extends StatefulWidget {
   final String profilePhoto;
@@ -18,8 +21,12 @@ class PostCardHome extends StatefulWidget {
 }
 
 class _PostCardHomeState extends State<PostCardHome> {
+
   @override
   Widget build(BuildContext context) {
+
+    // final detailPost = DetailPost.fromSnapshot(DocumentSnapshot);
+
     return Padding(
       padding: EdgeInsets.all(10),
       child: GestureDetector(
@@ -57,6 +64,18 @@ class _PostCardHomeState extends State<PostCardHome> {
                   padding: EdgeInsets.all(10),
                   child: Text(widget.description, style: TextStyle(fontSize: 16),),
                 ),
+              ),
+              Container(
+                padding: EdgeInsets.only(right: 15, bottom: 10),
+                child: TextButton(
+                  onPressed: (){
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailEventPage(uploadedBy: snapshot.data?.docs[index]['uploadedBy'] ,postId: ,)));
+                  },
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text('Click for Detail', style: TextStyle(color: Colors.blue, fontSize: 17),),
+                  ),
+                )
               )
             ],
           ),
