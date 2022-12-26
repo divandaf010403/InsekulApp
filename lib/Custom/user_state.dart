@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:insekul_app/Display/BottomNav.dart';
 import 'package:insekul_app/Pages/LoginPage.dart';
 
@@ -22,7 +21,7 @@ class UserState extends StatelessWidget {
         } else if (userSnapshot.hasError) {
           return const Scaffold(
             body: Center(
-              child: Text('An Error Has Been Occured, Try Again Later'),
+              child: Text('An Error Has Been Occurred, Try Again Later'),
             ),
           );
 

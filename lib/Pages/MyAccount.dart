@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -21,7 +22,9 @@ class _MyAccountState extends State<MyAccount> {
   String? imageUrl = '';
   String? name = '';
   String? email = '';
+  String? tlp = '';
   File? imageXFile;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future _getData() async {
     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
@@ -32,6 +35,7 @@ class _MyAccountState extends State<MyAccount> {
           imageUrl = snapshot.data()!['userImage'];
           name = snapshot.data()!['name'];
           email = snapshot.data()!['email'];
+          tlp = snapshot.data()!['phoneNumber'];
         });
       }
     });
@@ -45,7 +49,6 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   void _logout(context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
     showDialog(
         context: context,
         builder: (context) {
@@ -146,6 +149,8 @@ class _MyAccountState extends State<MyAccount> {
                   // SizedBox(height: 5,),
                   Text(email!, style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),),
                   SizedBox(height: 15,),
+                  Text(tlp!, style: TextStyle(fontSize: 17, color: Colors.white),),
+                  SizedBox(height: 15,)
                 ],
               ),
             ),
@@ -161,15 +166,6 @@ class _MyAccountState extends State<MyAccount> {
                   },
                   icons: Icons.exit_to_app_rounded,
                   title: "Sign Out",
-                ),
-                SettingsItem(
-                  onTap: () {},
-                  icons: Icons.delete,
-                  title: "Delete account",
-                  titleStyle: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ],
             ),

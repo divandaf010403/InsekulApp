@@ -145,12 +145,16 @@ class _AddPostPageState extends State<AddPostPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          height: size.width * 0.5,
+                          // height: size.width * 0.5,
+                          constraints: BoxConstraints(
+                            minHeight: size.width * 0.5,
+                          ),
                           decoration: BoxDecoration(
                               border: Border.all(width: 2, color: Color(0xFF58A191),),
                               borderRadius: BorderRadius.circular(20)
                           ),
                           child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
                             child: imageFile == null
                                 ? const Icon(Icons.camera_enhance_rounded, color: Color(0xFF58A191), size: 40,)
                                 : Image.file(imageFile!, fit: BoxFit.fill,),
@@ -243,6 +247,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   // padding: EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
                     controller: _keterangan,
+                    keyboardType: TextInputType.multiline,
                     decoration: const InputDecoration(
                       hintText: 'Tambahkan Keterangan',
                       contentPadding: EdgeInsets.all(20),
@@ -509,10 +514,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   void _cropImage(filePath) async {
     CroppedFile? croppedImage = await ImageCropper().cropImage(
-        sourcePath: filePath,
-        maxHeight: 1000,
-        maxWidth: 1000,
-        aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
+        sourcePath: filePath, maxHeight: 1000, maxWidth: 1000
     );
 
     if (croppedImage != null) {

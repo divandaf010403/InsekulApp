@@ -382,10 +382,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               onPressed: (){
                                 _submitFormOnSignUp();
                               },
-                              color: Colors.cyan,
+                              color: Color(0xFF58A191),
                               elevation: 8,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13),
+                                borderRadius: BorderRadius.circular(50),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 14),

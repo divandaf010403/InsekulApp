@@ -7,6 +7,7 @@ import 'package:insekul_app/Custom/global_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import 'package:insekul_app/SidePages/ForgetPaswword.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -212,7 +213,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     alignment: Alignment.centerRight,
                                     child: TextButton(
                                       onPressed: () {
-                                        //forgot password screen
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPassword()));
                                       },
                                       child: const Text(
                                         'Forgot Password', style: TextStyle(fontSize: 17),),

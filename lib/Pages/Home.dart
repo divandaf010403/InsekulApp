@@ -6,8 +6,8 @@ import 'package:insekul_app/Display/PostCardHome.dart';
 import 'package:insekul_app/SidePages/AddPostPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:insekul_app/Display/DetailInfo.dart';
-import 'package:insekul_app/Pages/DetailEventPage.dart';
+import 'package:insekul_app/SidePages/DetailEventPage.dart';
+import 'package:insekul_app/SidePages/ChatPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,10 +18,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  String? name = '';
+  String name = '';
 
-  void _getData() async {
-    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
+  void _getData() {
+    FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((snapshot) {
           if (snapshot.exists) {
@@ -70,14 +70,23 @@ class _HomePageState extends State<HomePage> {
               closedColor: Colors.transparent,
               closedElevation: 0,
               closedBuilder: (context, openContainer) {
-                return Icon(Icons.add_box_outlined,);
+                return Icon(Icons.add_box_outlined, size: 25,);
               },
             ),
-            IconButton(
-              onPressed: (){},
-              icon: Icon(Ionicons.chatbox_ellipses_outline,),
-              enableFeedback: false,
+            SizedBox(width: 15,),
+            OpenContainer(
+              transitionDuration: Duration(seconds: 1),
+              openBuilder: (context, _) => ChatPage(),
+              openColor: Colors.white,
+              middleColor: Colors.white,
+              openElevation: 0,
+              closedColor: Colors.transparent,
+              closedElevation: 0,
+              closedBuilder: (context, openContainer) {
+                return Icon(Ionicons.chatbox_ellipses_outline, size: 25,);
+              },
             ),
+            SizedBox(width: 20,)
           ],
         ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>> (
@@ -91,6 +100,8 @@ class _HomePageState extends State<HomePage> {
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index){
                     return PostCardHome(
+                      postId: snapshot.data?.docs[index]['postId'],
+                      uploadedBy: snapshot.data?.docs[index]['uploadedBy'],
                       name: snapshot.data?.docs[index]['name'],
                       postImage: snapshot.data?.docs[index]['postImage'],
                       description: snapshot.data?.docs[index]['keterangan'],

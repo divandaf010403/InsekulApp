@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class DetailEventPage extends StatefulWidget {
 
@@ -18,8 +17,6 @@ class DetailEventPage extends StatefulWidget {
 
 class _DetailEventPageState extends State<DetailEventPage> {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   Image? postImage;
   Timestamp? createdAt;
   String? eventDate;
@@ -28,35 +25,43 @@ class _DetailEventPageState extends State<DetailEventPage> {
   String? keterangan = '';
   String? lokasi = '';
   String? postDate;
+  String? name;
+  String? userImage;
 
-  void getDetailData() async {
-    final DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.uploadedBy)
-        .get();
-
-    final DocumentSnapshot postData = await FirebaseFirestore.instance
-        .collection('jobs')
+  void getData() async {
+    // final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(widget.uploadedBy)
+    //     .get();
+    final DocumentSnapshot Database = await FirebaseFirestore.instance
+        .collection('post')
         .doc(widget.postId)
         .get();
 
-    if (postData == null) {
+    // if (userDoc == null) {
+    //   return;
+    // } else {
+    //   setState(() {
+    //     name = userDoc.get('name');
+    //     postImage = userDoc.get('userImage');
+    //   });
+    // }
+
+    if (Database == null) {
       return;
     } else {
       setState(() {
-        postImage = postData.get('postImage');
-        createdAt = postData.get('createdAt');
-        eventCategory = postData.get('eventCategory');
-        jenjang = postData.get('jenjang');
-        keterangan = postData.get('keterangan');
-        lokasi = postData.get('lokasi');
-        eventDate = postData.get('eventDate');
+        postImage = Database.get('jobTitle');
+        createdAt = Database.get('createdAt');
+        eventDate = Database.get('eventDate');
+        eventCategory = Database.get('eventCategory');
+        jenjang = Database.get('jenjang');
+        keterangan = Database.get('keterangan');
+        lokasi = Database.get('lokasi');
 
         var postedDate = createdAt!.toDate();
         postDate = '${postedDate.year}-${postedDate.month}-${postedDate.day}';
       });
-      // var date = eventDate!.toDate();
-      // eventDay = date.isAfter(DateTime.now());
     }
   }
 
@@ -64,7 +69,7 @@ class _DetailEventPageState extends State<DetailEventPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDetailData();
+    getData();
   }
 
   @override
@@ -87,12 +92,16 @@ class _DetailEventPageState extends State<DetailEventPage> {
           child: Column(
             children: [
               Divider(thickness: 2,),
-              Text('Khusus Untuk Jenjang Pendidikan : ' + jenjang!),
-              Text('Kategori Event : ' + eventCategory!),
-              Text('Dilaksanakan Pada : ' + eventDate!),
-              Text('Lokasi Event : ' + lokasi!),
-              Divider(thickness: 2,),
-              Text(keterangan!),
+              Text('Khusus Untuk Jenjang Pendidikan : ' +
+                  jenjang! == null ? '' : jenjang!,),
+              // Text('Kategori Event : ' +
+              //     eventCategory! == null ? '' : eventCategory!,),
+              // Text('Dilaksanakan Pada : ' +
+              //     eventDate! == null ? '' : eventDate!,),
+              // Text('Lokasi Event : ' +
+              //     lokasi! == null ? '' : lokasi!,),
+              // Divider(thickness: 2,),
+              // Text(keterangan! == null ? '' : keterangan!,),
             ],
           ),
         ),
