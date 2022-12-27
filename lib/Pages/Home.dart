@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
 
   String name = '';
 
-  void _getData() {
-    FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
+  void _getData() async {
+    await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((snapshot) {
           if (snapshot.exists) {

@@ -215,18 +215,18 @@ class _AddPostPageState extends State<AddPostPage> {
                         contentPadding: EdgeInsets.all(10.0),
                         prefixIcon: Icon(Ionicons.location_outline, color: Colors.black),
                         border: InputBorder.none,
-                        suffixIcon: Container(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(50.0),
-                              ),
-                            ),
-                            child: Text("Maps"),
-                            onPressed: () {},
-                          ),
-                        ),
+                        // suffixIcon: Container(
+                        //   child: ElevatedButton(
+                        //     style: ElevatedButton.styleFrom(
+                        //       backgroundColor: Colors.blue,
+                        //       shape: new RoundedRectangleBorder(
+                        //         borderRadius: new BorderRadius.circular(50.0),
+                        //       ),
+                        //     ),
+                        //     child: Text("Maps"),
+                        //     onPressed: () {},
+                        //   ),
+                        // ),
                       ),
                     )
                 ),
@@ -248,6 +248,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   child: TextFormField(
                     controller: _keterangan,
                     keyboardType: TextInputType.multiline,
+                    maxLines: null,
                     decoration: const InputDecoration(
                       hintText: 'Tambahkan Keterangan',
                       contentPadding: EdgeInsets.all(20),
@@ -536,7 +537,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
     if (picked != null) {
       setState(() {
-        _eventDate.text = '${picked!.year} - ${picked!.month} - ${picked!.day}';
+        _eventDate.text = '${picked!.day} - ${picked!.month} - ${picked!.year}';
         timeStamp = Timestamp.fromMicrosecondsSinceEpoch(picked!.microsecondsSinceEpoch);
       });
     }

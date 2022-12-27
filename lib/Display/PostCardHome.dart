@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:insekul_app/SidePages/DetailEventPage.dart';
 
@@ -77,7 +76,7 @@ class _PostCardHomeState extends State<PostCardHome> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DetailEventPage(
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailEventPage(
                           uploadedBy: widget.uploadedBy,
                           postId: widget.postId,
                       )));
