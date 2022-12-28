@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:insekul_app/Custom/SearchCategory.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:insekul_app/Custom/user.dart';
-import 'package:uuid/uuid.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -257,10 +255,8 @@ class _SearchPageState extends State<SearchPage> {
                                 itemCount: snapshot.data?.docs.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Card(
-                                    shape:  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
                                     child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
                                       child: Image.network(snapshot.data?.docs[index]['postImage']),
                                     ),
                                   );

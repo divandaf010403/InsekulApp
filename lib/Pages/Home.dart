@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage> {
           ),
           title: Text('INSEKUL', style: GoogleFonts.oleoScript(fontSize: 30, fontWeight: FontWeight.w400, color: Colors.white),),
           actions: [
-            //
             OpenContainer(
               transitionDuration: Duration(seconds: 1),
               openBuilder: (context, _) => AddPostPage(),

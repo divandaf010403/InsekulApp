@@ -162,10 +162,17 @@ class _MyAccountState extends State<MyAccount> {
               items: [
                 SettingsItem(
                   onTap: () {
+                    //edit
+                  },
+                  icons: Icons.exit_to_app_rounded,
+                  title: "Edit Profile",
+                ),
+                SettingsItem(
+                  onTap: () {
                     _logout(context);
                   },
                   icons: Icons.exit_to_app_rounded,
-                  title: "Sign Out",
+                  title: "Keluar",
                 ),
               ],
             ),
